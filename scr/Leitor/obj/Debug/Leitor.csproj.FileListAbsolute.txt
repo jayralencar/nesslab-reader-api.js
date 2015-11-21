@@ -1,0 +1,7 @@
+C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\bin\Debug\Leitor.exe.config
+C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\bin\Debug\Leitor.exe
+C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\bin\Debug\Leitor.pdb
+C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\bin\Debug\nesslab.reader.api.dll
+C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\obj\Debug\Leitor.csprojResolveAssemblyReference.cache
+C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\obj\Debug\Leitor.exe
+C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\obj\Debug\Leitor.pdb
