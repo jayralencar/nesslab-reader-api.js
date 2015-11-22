@@ -16,4 +16,8 @@ reader.on('tag', function(res){
 
 reader.on('stateport4', function(res){
 	console.log(res)
-})
+});
+
+reader.on('disconnected', function(res){
+  	console.log(res); //Connected
+  });

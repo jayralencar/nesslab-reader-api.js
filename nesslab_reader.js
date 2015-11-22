@@ -25,7 +25,7 @@ nesslab_reader.prototype.init = function(){
 }
 
 nesslab_reader.prototype.stop = function(){
-	leitor.stdin.write('init\r\n');	
+	leitor.stdin.write('stop\r\n');	
 }
 
 nesslab_reader.prototype.enableAntenna = function(antennaport){
@@ -64,6 +64,7 @@ nesslab_reader.prototype.disconnect = function(){
 
 nesslab_reader.prototype.close = function(){
 	leitor.stdin.write('exit\r\n');	
+	leitor.kill();
 }
 
 leitor.stdout.on('data', function (data) {
