@@ -1,6 +1,8 @@
 # nesslab-reader-api.js
 Node module to rfid reader nesslab. <br/>
 
+[![NPM](https://nodei.co/npm/nesslab-reader-api.png?downloads=true&downloadRank=true)](https://nodei.co/npm/nesslab-reader-api/)
+
 Módulo desenvolvido para facilitar a comunicação do node.js com o leitor rfid da <a href="http://www.nesslab.com/">NESSLAB</a>, que é um dos mais acessíveis no mercado. Foi testado apenas no modelo NL_RF1000.
 
 <h1>Instalação</h1>
