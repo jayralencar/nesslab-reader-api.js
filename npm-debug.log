@@ -1,0 +1,99 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'publish',
+1 verbose cli   '--force' ]
+2 info using npm@2.14.7
+3 info using node@v4.2.2
+4 warn using --force I sure hope you know what you are doing.
+5 verbose publish [ '.' ]
+6 silly cache add args [ '.', null ]
+7 verbose cache add spec .
+8 silly cache add parsed spec Result {
+8 silly cache add   raw: '.',
+8 silly cache add   scope: null,
+8 silly cache add   name: null,
+8 silly cache add   rawSpec: '.',
+8 silly cache add   spec: 'C:\\desenvolvimento\\nesslab-reader-api.js',
+8 silly cache add   type: 'directory' }
+9 verbose addLocalDirectory C:\Users\Jayr\AppData\Roaming\npm-cache\nesslab-reader-api\0.1.2\package.tgz not in flight; packing
+10 verbose tar pack [ 'C:\\Users\\Jayr\\AppData\\Roaming\\npm-cache\\nesslab-reader-api\\0.1.2\\package.tgz',
+10 verbose tar pack   'C:\\desenvolvimento\\nesslab-reader-api.js' ]
+11 verbose tarball C:\Users\Jayr\AppData\Roaming\npm-cache\nesslab-reader-api\0.1.2\package.tgz
+12 verbose folder C:\desenvolvimento\nesslab-reader-api.js
+13 info prepublish nesslab-reader-api@0.1.2
+14 verbose addLocalTarball adding from inside cache C:\Users\Jayr\AppData\Roaming\npm-cache\nesslab-reader-api\0.1.2\package.tgz
+15 silly cache afterAdd nesslab-reader-api@0.1.2
+16 verbose afterAdd C:\Users\Jayr\AppData\Roaming\npm-cache\nesslab-reader-api\0.1.2\package\package.json not in flight; writing
+17 verbose afterAdd C:\Users\Jayr\AppData\Roaming\npm-cache\nesslab-reader-api\0.1.2\package\package.json written
+18 silly publish { name: 'nesslab-reader-api',
+18 silly publish   description: 'Node module to rfid reader nesslab',
+18 silly publish   readmeFilename: 'README.md',
+18 silly publish   keywords: [ 'rfid', 'simple', 'reader', 'nesslab' ],
+18 silly publish   tags: [ 'rfid', 'simple', 'reader', 'nesslab' ],
+18 silly publish   version: '0.1.2',
+18 silly publish   author: { name: 'Jayr Alencar', email: 'jayralencarpereira@gmail.com' },
+18 silly publish   repository:
+18 silly publish    { type: 'git',
+18 silly publish      url: 'git+https://github.com/JayrAlencar/nesslab-reader-api.js.git' },
+18 silly publish   license: 'MIT',
+18 silly publish   engines: { node: '>=0.8.0' },
+18 silly publish   main: 'nesslab_reader.js',
+18 silly publish   readme: '# nesslab-reader-api.js\r\nNode module to rfid reader nesslab. <br/>\r\n\r\n[![NPM](https://nodei.co/npm/nesslab-reader-api.png?downloads=true&downloadRank=true)](https://nodei.co/npm/nesslab-reader-api/)\r\n\r\nMódulo desenvolvido para facilitar a comunicação do node.js com o leitor rfid da <a href="http://www.nesslab.com/">NESSLAB</a>, que é um dos mais acessíveis no mercado. Foi testado apenas no modelo NL_RF1000.\r\n\r\n<h1>Instalação</h1>\r\nO módulo foi compartilhado no npm, para instalar execute o comando a seguir no diretório do seu projeto pelo terminal.\r\n<code>npm install nesslab-reader-api</code>\r\n\r\n<h1>Uso</h1>\r\nImporte o módulo com <code>require</code> como no exemplo a seguir\r\n<pre>\r\n<code>\r\n  var reader = require(\'nesslab-reader-api\');\r\n  \r\n  //Connecting\r\n  reader.connect(\'192.168.0.100\',5578);\r\n  \r\n  //On connect\r\n  reader.on(\'connect\', function(res){\r\n  \tconsole.log(res);\r\n  \t//Starting reading\r\n  \treader.init();\r\n  });\r\n  \r\n  //On tag\r\n  reader.on(\'tag\',function(res){\r\n    //Nmber of tag\r\n  \tconsole.log(res.tag);\r\n  \t//Antenna\r\n  \tconsole.log(res.antenna);\r\n  \t//Antena+tag\r\n  \tconsole.log(res.tagId);\r\n  });\r\n</code>\r\n</pre>\r\n<h1>Métodos</h1>\r\nOs métodos dizem respeito às ações da parte do usuário para o leitor. Veja:\r\n<h3>connect(ip, port)</h3>\r\nMétodo para conexão com o leitor, basta informar o ip (string) e a porta (int). Você deve usar este método antes de todos os outros.\r\n<h3>init()</h3>\r\nPara iniciar a leitura de tags, depois que este método é chamado o leitor, se conectado, inicia a leitura das tags.\r\n<h3>stop()</h3>\r\nEste método serve para pausar a leitura, que pode ser iniciada novamente com o método init\r\n<h3>disableAntenna(antennaPort)</h3>\r\nEste método deve ser chamado quando você deseja desabilitar uma antena, você deve passar o número da porta como parâmetro, veja o exemplo como desabilitar a antena 1:\r\n<pre>\r\n  <code>\r\n    reader.disableAntenna(1);\r\n  </code>\r\n</pre>\r\n<h3>enableAntenna(antennaPort)</h3>\r\nSe você desabilitou uma antena, ou ela está desabilitada por algum outro motivo, você pode reativar com este método, basta passar por parâmetro o número da porta da antena.\r\n<h3>setPowerAntenna(antennaPort, power)</h3>\r\nCom este método você pode setar a potencia que você deseja para determinada antena passando por parâmetro o número da porta da antena e a potencia, veja:\r\n<pre>\r\n  <code>\r\n    reader.setPowerAntenna(1,200);\r\n  </code>\r\n</pre>\r\n<h3>getAntennaState()</h3>\r\nEste método serve para retornar o status das antenas, que serão retornados nos eventos <code>stateport1, stateport2, stateport3 e stateport4</code> que veremos mais a frente.\r\n<h3>getPower()</h3>\r\nVocê deve usar este método quando deseja saber qual a potencia atual do leitor, é só chamar o método e escutar o evento <code>antennapower</code> que veremos mais a baixo.\r\n<h3>reconnect</h3>\r\nEste evento vai desconectar e reconectar o leitor.\r\n<h3>disconnect</h3>\r\nEste método vai desconectar o leitor, e para conectar novamente você deve usar o método <code>connect</code>\r\n<h3>close</h3>\r\nEste método vai fechar a comunicação com o leitor\r\n\r\n<h1>Eventos</h1>\r\nVocê usurá os eventos para tratar as informações retornadas do leitor, veja um exemplo de como usar um evento:\r\n<pre>\r\n  <code>\r\n    reader.on(\'tag\',function(res){\r\n    \tconsole.log(res.tag);\r\n    });\r\n  </code>\r\n</pre>\r\n\r\n<h3>tag</h3>\r\nEste evento como o nome sugere e como mostrado acima retorna um objeto JSON com a tag lida, a antena e a string completa retornada do leitor que é formada pela antena e a tag juntas.\r\n<pre>\r\n  <code>\r\n    reader.on(\'tag\',function(res){\r\n    \tconsole.log(res.tagId); //Mostra 4T3000000000000000000000000295\r\n    \tconsole.log(res.tag); //Mostra 3000000000000000000000000295\r\n    \tconsole.log(res.antenna); //Mostra 4\r\n    });\r\n  </code>\r\n</pre>\r\n<h3>waiting</h3>\r\nEste evento vai ser chamado sempre que o leitor esperar uma ação do usuário ou do módulo\r\n<h3>connected</h3>\r\nQuando o leitor estiver devidamente conectado este método será chamado, veja o exemplo:\r\n<pre>\r\n<code>\r\n  var reader = require(\'nesslab-reader-api\');\r\n  \r\n  //Connecting\r\n  reader.connect(\'192.168.0.100\',5578);\r\n  \r\n  //On connect\r\n  reader.on(\'connect\', function(res){\r\n  \tconsole.log(res); //Connected\r\n  });\r\n</code>\r\n</pre>\r\n<h3>init</h3>\r\nEste evento é disparado quando o leitor inicia a leitura das tags.\r\n<h3>disconnected</h3>\r\nEste evento é chamado quando o leitor é desconectado por algum motivo, é ideal que seja sempre usado para que o usuário e o desenvolvedor saibam o que houve. Ele retorna o erro que aconteceu, use-o assim:\r\n<pre>\r\n<code>\r\n  var reader = require(\'nesslab-reader-api\');\r\n  \r\n  //Connecting\r\n  reader.connect(\'192.168.0.100\',5578);\r\n  \r\n  //On disconnect\r\n  reader.on(\'disconnected\', function(res){\r\n  \tconsole.log(res); //Connection error\r\n  });\r\n</code>\r\n</pre>\r\n<h3>antennapower</h3>\r\nEste evento é acionado quando o método <code>getPower()</code> é chamado. Veja um exemplo\r\n<pre>\r\n  <code>\r\n    var reader = require(\'nesslab-reader-api\');\r\n  \r\n    //Connecting\r\n    reader.connect(\'192.168.0.100\',5578);\r\n    \r\n    reader.getPower();\r\n    \r\n    reader.on(\'antennapower\', function(power){\r\n      console.log(power);\r\n    });\r\n  </code>\r\n</pre>\r\n<h3>Eventos de estado</h3>\r\nQuando o método <code>getAntennaState</code> for chamado os eventos referente ao estado de cada antena será chamado, retornando verdadeiro para as ativas e falsos para as inativas, veja a baixo:\r\n<pre>\r\n<code>\r\n  var reader = require(\'nesslab-reader-api\');\r\n  \r\n  //Connecting\r\n  reader.connect(\'192.168.0.100\',5578);\r\n  \r\n  //Getting states\r\n  reader.getAntennaState();\r\n  \r\n  //Antenna 1\r\n  reader.on(\'stateport1\', function(state){\r\n    console.log(state);\r\n  });\r\n  \r\n  //Antenna 2\r\n  reader.on(\'stateport1\', function(state){\r\n    console.log(state);\r\n  });\r\n  \r\n  //Antenna 3\r\n  reader.on(\'stateport1\', function(state){\r\n    console.log(state);\r\n  });\r\n  \r\n  //Antenna 4\r\n  reader.on(\'stateport1\', function(state){\r\n    console.log(state);\r\n  });\r\n</code>\r\n</pre>\r\n',
+18 silly publish   gitHead: '344ccf09641d32a8ed03011699d466863890ab97',
+18 silly publish   bugs: { url: 'https://github.com/JayrAlencar/nesslab-reader-api.js/issues' },
+18 silly publish   homepage: 'https://github.com/JayrAlencar/nesslab-reader-api.js#readme',
+18 silly publish   _id: 'nesslab-reader-api@0.1.2',
+18 silly publish   scripts: {},
+18 silly publish   _shasum: '1e0e05a555dfde0da4d0f98b08137adb722b3888',
+18 silly publish   _from: '.' }
+19 verbose getPublishConfig undefined
+20 silly mapToRegistry name nesslab-reader-api
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/nesslab-reader-api
+24 verbose publish registryBase https://registry.npmjs.org/
+25 silly publish uploading C:\Users\Jayr\AppData\Roaming\npm-cache\nesslab-reader-api\0.1.2\package.tgz
+26 verbose request uri https://registry.npmjs.org/nesslab-reader-api
+27 verbose request sending authorization for write operation
+28 info attempt registry request try #1 at 01:20:38
+29 verbose request using bearer token for auth
+30 verbose request id 4c932ae52b57ab1c
+31 http request PUT https://registry.npmjs.org/nesslab-reader-api
+32 http 403 https://registry.npmjs.org/nesslab-reader-api
+33 verbose headers { 'content-type': 'application/json',
+33 verbose headers   'cache-control': 'max-age=60',
+33 verbose headers   'content-length': '95',
+33 verbose headers   'accept-ranges': 'bytes',
+33 verbose headers   date: 'Sun, 22 Nov 2015 04:20:41 GMT',
+33 verbose headers   via: '1.1 varnish',
+33 verbose headers   connection: 'keep-alive',
+33 verbose headers   'x-served-by': 'cache-lax1423-LAX',
+33 verbose headers   'x-cache': 'MISS',
+33 verbose headers   'x-cache-hits': '0',
+33 verbose headers   'x-timer': 'S1448166039.292997,VS0,VE2268' }
+34 verbose request invalidating C:\Users\Jayr\AppData\Roaming\npm-cache\registry.npmjs.org\nesslab-reader-api on PUT
+35 error publish Failed PUT 403
+36 verbose stack Error: "You cannot publish over the previously published version 0.1.2." : nesslab-reader-api
+36 verbose stack     at makeError (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:264:12)
+36 verbose stack     at CachingRegistryClient.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:252:14)
+36 verbose stack     at Request._callback (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:172:14)
+36 verbose stack     at Request.self.callback (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:198:22)
+36 verbose stack     at emitTwo (events.js:87:13)
+36 verbose stack     at Request.emit (events.js:172:7)
+36 verbose stack     at Request.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:1063:14)
+36 verbose stack     at emitOne (events.js:82:20)
+36 verbose stack     at Request.emit (events.js:169:7)
+36 verbose stack     at IncomingMessage.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:1009:12)
+37 verbose statusCode 403
+38 verbose pkgid nesslab-reader-api
+39 verbose cwd C:\desenvolvimento\nesslab-reader-api.js
+40 error Windows_NT 6.3.9600
+41 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "publish" "--force"
+42 error node v4.2.2
+43 error npm  v2.14.7
+44 error code E403
+45 error "You cannot publish over the previously published version 0.1.2." : nesslab-reader-api
+46 error If you need help, you may report this error at:
+46 error     <https://github.com/npm/npm/issues>
+47 verbose exit [ 1, true ]
