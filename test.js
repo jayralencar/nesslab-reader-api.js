@@ -11,7 +11,7 @@ reader.on('init', function(res){
 })
 
 reader.on('tag', function(res){
-	console.log(res.tag);
+	console.log(res.tagId);
 });
 
 reader.on('stateport4', function(res){
