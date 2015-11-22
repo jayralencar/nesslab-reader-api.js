@@ -5,3 +5,10 @@ C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\bin\Debug\nesslab.reader.
 C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\obj\Debug\Leitor.csprojResolveAssemblyReference.cache
 C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\obj\Debug\Leitor.exe
 C:\Users\Jayr\Documents\Densenvolvimento\Leitor\Leitor\obj\Debug\Leitor.pdb
+C:\Desenvolvimento\nesslab-reader-api.js\scr\Leitor\bin\Debug\Leitor.exe.config
+C:\Desenvolvimento\nesslab-reader-api.js\scr\Leitor\obj\Debug\Leitor.exe
+C:\Desenvolvimento\nesslab-reader-api.js\scr\Leitor\obj\Debug\Leitor.pdb
+C:\Desenvolvimento\nesslab-reader-api.js\scr\Leitor\bin\Debug\Leitor.exe
+C:\Desenvolvimento\nesslab-reader-api.js\scr\Leitor\bin\Debug\Leitor.pdb
+C:\Desenvolvimento\nesslab-reader-api.js\scr\Leitor\bin\Debug\nesslab.reader.api.dll
+C:\Desenvolvimento\nesslab-reader-api.js\scr\Leitor\obj\Debug\Leitor.csprojResolveAssemblyReference.cache
