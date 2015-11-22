@@ -72,7 +72,13 @@ leitor.stdout.on('data', function (data) {
 	var comandos = comando.split("|");
 	switch(comandos[0]){
 		case 'tag':
-			reader.emit('tag', comandos[1]);
+			var tag = comandos[1];
+			var result = {
+				tag: tag.substring(2,30),
+				antenna: tag.substring(0,1),
+				tagId: tag 
+			}
+			reader.emit('tag', result);
 			break;
 		case 'waiting': 
 			reader.emit('waiting',"waiting for "+comandos[1]);

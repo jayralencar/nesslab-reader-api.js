@@ -10,8 +10,8 @@ reader.on('init', function(res){
 	console.log(res);
 })
 
-reader.on('tag', function(tagId){
-	console.log(tagId);
+reader.on('tag', function(res){
+	console.log(res.tag);
 });
 
 reader.on('stateport4', function(res){
