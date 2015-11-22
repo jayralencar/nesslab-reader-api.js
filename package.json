@@ -1,6 +1,13 @@
 {
   "name": "nesslab-reader-api",
   "description": "Node module to rfid reader nesslab",
+   "readmeFilename": "README.md" ,
+  "keywords": [
+    "rfid",
+    "simple",
+    "reader",
+    "nesslab"
+  ],
   "tags": [
     "rfid",
     "simple",
