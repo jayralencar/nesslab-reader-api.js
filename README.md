@@ -160,17 +160,17 @@ Quando o método <code>getAntennaState</code> for chamado os eventos referente a
   });
   
   //Antenna 2
-  reader.on('stateport1', function(state){
+  reader.on('stateport2', function(state){
     console.log(state);
   });
   
   //Antenna 3
-  reader.on('stateport1', function(state){
+  reader.on('stateport3', function(state){
     console.log(state);
   });
   
   //Antenna 4
-  reader.on('stateport1', function(state){
+  reader.on('stateport4', function(state){
     console.log(state);
   });
 </code>
