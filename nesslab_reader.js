@@ -95,7 +95,5 @@ nesslab_reader.prototype.close = function(){
 	
 }
 
-
-
 // util.inherits(nesslab_reader, EventEmitter);
 module.exports = new nesslab_reader();
