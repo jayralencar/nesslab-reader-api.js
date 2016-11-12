@@ -11,12 +11,16 @@ nesslab_reader = function(){
 	});
 
 	this.socket.on('error', function(res){
-		console.log("Erro:"+res)
+		this.emit('error',"Error to connect socket!")
 	})
 
 	this.socket.on('close', function(res){
 		console.log(res)
 	});
+
+	this.socket.on('connected', function(res){
+		console.log('connected');
+	})
 }
 
 var connected = false;
@@ -49,9 +53,8 @@ nesslab_reader.prototype.connect = function(ip, port, callback){
 	ip = ip || this.ip;
 	port = port || this.port;
 	this.socket = net.connect(port, ip, function(res){
-
-	}, function(res){
-		console.log("Erro:"+res)
+		this.emit('connected');
+		callback();
 	});
 }
 
