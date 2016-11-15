@@ -32,6 +32,12 @@ nesslab_reader = function(){
 				break;
 			case '>%':
 				self.emit('power',{port:parseInt(dataStr.substring(2,4)),value:parseInt(dataStr.substring(5))});
+			case '>s':
+				self.emit('algorithmParameter',(dataStr.substring(2)));
+				break;	
+			case '>r':
+				self.emit('ipAddress',dataStr.substring(4));
+				break;
 		}
 	})
 }
@@ -103,9 +109,27 @@ nesslab_reader.prototype.getAlgorithmParameter = function(algorithm, index, call
 	});
 }
 
-nesslab_reader.prototype.GetQValue = function(callback){
+nesslab_reader.prototype.getQValue = function(callback){
 	this.socket.write(new Buffer([62,121,32,113,13,10]));
 	this.on('Qvalue', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getSession = function(callback){
+	this.socket.write(new Buffer([62,121,32,115,13,10]));
+	this.on('session', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getIpAddress = function(callback){
+	this.socket.write(new Buffer([62,121,32,114,13,10]));
+	this.on('ipAddress', function(data){
 		if(callback){
 			callback(data)
 		}
