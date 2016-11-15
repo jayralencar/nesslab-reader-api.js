@@ -30,23 +30,27 @@ var net = require('net');
 */
 var nesslab_reader = function(){
 	var self = this;
-	this.socket = new net.Socket();
-
+	this.socket = net.Socket();
 	this.socket.on('data', function(data){
-		console.log(data)
+		console.log(data.toString());
 	});
 
 	this.socket.on('error', function(res){
-		this.emit('error',"Error to connect socket!")
+		this.emit('error',"Error to connect this.socket!")
 	});
 
 	this.socket.on('close', function(res){
-		console.log(res)
+		console.log('res')
 	});
 
-	this.socket.on('connected', function(res){
-		console.log('connected');
+	this.socket.on("connect", function(res){
+		console.log('con')
+	})
+
+	this.socket.on('open', function(res){
+		console.log('open')
 	});
+
 }
 
 /**
@@ -76,7 +80,7 @@ nesslab_reader.prototype.port = 5578;
 * @param {Function} callback - callback function
 * @return {Object} this
 */
-nesslab_reader.prototype.connect = function(ip, port, callback){
+nesslab_reader.prototype.connect = function(ip, port){
 	if(typeof ip == 'function'){
 		callback = ip;
 		ip = this.ip;
@@ -90,7 +94,6 @@ nesslab_reader.prototype.connect = function(ip, port, callback){
 	port = port || this.port;
 	this.socket = net.connect(port, ip, function(res){
 		this.emit('connected');
-		callback();
 	});
 	return this;
 }
