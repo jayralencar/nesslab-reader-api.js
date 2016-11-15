@@ -23,136 +23,24 @@ SOFTWARE.
 */
 var events = require('events');
 var net = require('net');
+var socket = net.Socket();
 
-/**
-* Class nesslab_reader
-* @author Jayr (@jayralencar)
-*/
-var nesslab_reader = function(){
-	var self = this;
-	this.socket = net.Socket();
-	this.socket.on('data', function(data){
-		console.log(data.toString());
-	});
+function Reader(){
 
-	this.socket.on('error', function(res){
-		this.emit('error',"Error to connect this.socket!")
-	});
-
-	this.socket.on('close', function(res){
-		console.log('res')
-	});
-
-	this.socket.on("connect", function(res){
-		console.log('con')
-	})
-
-	this.socket.on('open', function(res){
-		console.log('open')
-	});
+	// this.socket = net.connect(port, ip);
 
 }
 
-/**
-* Events constructor inheritance
-*/
-nesslab_reader.prototype = new events.EventEmitter;
+socket.on('connect', function(res){
+	console.log('conn')
+	// this.emit('connect',"The reader is connected");
+});
 
-/**
-* var nodeVersion - Getting node version in current machine
-*/
-nesslab_reader.prototype.nodeVersion = process.versions.node;
+Reader.prototype = new events.EventEmitter;
 
-/**
-* var ip - default IP Adderess
-*/
-nesslab_reader.prototype.ip = '192.168.0.100';
 
-/**
-* var port - default TCP port
-*/
-nesslab_reader.prototype.port = 5578;
-
-/**
-* method connect - connecting to reader
-* @param {Sintrg} ip - IP Address
-* @param {String|Int} port - TCP port
-* @param {Function} callback - callback function
-* @return {Object} this
-*/
-nesslab_reader.prototype.connect = function(ip, port){
-	if(typeof ip == 'function'){
-		callback = ip;
-		ip = this.ip;
-	}
-	if(typeof port == 'function'){
-		callback = port;
-		port = this.port;
-	}
-
-	ip = ip || this.ip;
-	port = port || this.port;
-	this.socket = net.connect(port, ip, function(res){
-		this.emit('connected');
-	});
-	return this;
+Reader.prototype.connect = function(ip, port){
+	socket.connect(port,ip);
 }
 
-/**
-* method init - start reading tags
-* @param {Function} callback - callback function
-* @return {Object} this
-*/
-nesslab_reader.prototype.init = function(callback){
-	this.socket.write(new Buffer([62,102,13,10]));
-	if(callback){
-		callback();
-	}
-	return this;
-}
-
-/**
-* method stop - stop reading tags
-* @param {Function} callback - callback function
-* @return {Object} this
-*/
-nesslab_reader.prototype.stop = function(callback){
-	if(callback){
-		callback();
-	}
-	return this;
-}
-
-nesslab_reader.prototype.enableAntenna = function(antennaport){
-	
-}
-
-nesslab_reader.prototype.disableAntenna = function(antennaport){
-	
-}
-
-nesslab_reader.prototype.setPowerAntenna = function(antennaport, power){
-	
-}
-
-nesslab_reader.prototype.getAntennaState = function(){
-	
-}
-
-nesslab_reader.prototype.getPower = function(){
-	
-}
-
-nesslab_reader.prototype.reconnect = function(){
-	
-}
-
-nesslab_reader.prototype.disconnect = function(){
-	
-}
-
-nesslab_reader.prototype.close = function(){
-	
-}
-
-module.exports = new nesslab_reader();
+module.exports = new Reader();

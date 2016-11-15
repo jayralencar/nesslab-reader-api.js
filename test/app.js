@@ -1,5 +1,4 @@
 var ness = require('../nesslab_reader');
-console.log('hi')
 ness.connect('192.168.0.100',5578, function() {
 });
 
