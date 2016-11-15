@@ -2,6 +2,7 @@ var ness = require('../nesslab_reader');
 ness.connect('192.168.0.100',5578, function() {
 });
 
+<<<<<<< HEAD
 ness.on("connect", function(res){
 	console.log('connect');
 	ness.init();
@@ -21,3 +22,13 @@ ness.on("connect", function(res){
 // socket.on('data', function(e){
 // 	console.log(e.toString())
 // })
+=======
+ness.connect('192.168.0.100',5578);
+
+ness.on('connect', function(res) {
+	ness.init();
+	setTimeout(function(){
+		ness.stop();
+	},10000);
+});
+>>>>>>> nw
