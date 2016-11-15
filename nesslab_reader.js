@@ -13,11 +13,25 @@ nesslab_reader = function(){
 
 		switch(type){
 			case '>p':
-				self.emit('power',parseInt(dataStr.substring(2)));
+				self.emit('power',{port:0,value:parseInt(dataStr.substring(2))});
 				break;
 			case '>e':
 				self.emit('antennaState', parseInt(dataStr.substring(2)));
 				break;
+			case '>b':
+				self.emit('buzzer',parseInt(dataStr.substring(2)));
+				break;
+			case '>c':
+				self.emit('continueMode',parseInt(dataStr.substring(2)));
+				break;
+			case '>q':
+				self.emit('Qvalue',parseInt(dataStr.substring(2)));
+				break;
+			case '>Q':
+				self.emit('algorithmParameter',parseInt(dataStr.substring(2)));
+				break;
+			case '>%':
+				self.emit('power',{port:parseInt(dataStr.substring(2,4)),value:parseInt(dataStr.substring(5))});
 		}
 	})
 }
@@ -62,6 +76,42 @@ nesslab_reader.prototype.stop = function(){
 	this.socket.write(new Buffer([62,51,13,10]));
 }
 
+nesslab_reader.prototype.getBuzzer = function(callback){
+	this.socket.write(new Buffer([62,121,32,98,13,10]));
+	this.on('buzzer', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getContinueMode = function(callback){
+	this.socket.write(new Buffer([62,121,32,99,13,10]));
+	this.on('continueMode', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getAlgorithmParameter = function(algorithm, index, callback){
+	this.socket.write(new Buffer([62,121,32,81,32,algorithm.toString(),index.toString(),13,10 ]));
+	this.on('algorithmParameter', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.GetQValue = function(callback){
+	this.socket.write(new Buffer([62,121,32,113,13,10]));
+	this.on('Qvalue', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
 nesslab_reader.prototype.enableAntenna = function(antennaport){
 	
 }
@@ -83,8 +133,19 @@ nesslab_reader.prototype.getAntennaState = function(callback){
 	});
 }
 
-nesslab_reader.prototype.getPower = function(callback){
-	this.socket.write(new Buffer([62,121,32,112,13,10]));
+nesslab_reader.prototype.getPower = function(port, callback){
+	if(port){
+		if(typeof(port) == 'number'){
+			var v = new Buffer([62,121,32,37,32,port.toString().charCodeAt(0),13,10])
+			this.socket.write(v);
+		}else{
+			callback = port;
+			this.socket.write(new Buffer([62,121,32,112,13,10]));
+		}
+	}else{
+		this.socket.write(new Buffer([62,121,32,112,13,10]));
+	}
+	
 	this.on('power', function(data){
 		if(callback){
 			callback(data)
