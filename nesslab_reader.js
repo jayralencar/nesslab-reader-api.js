@@ -12,18 +12,26 @@ nesslab_reader = function(){
 		console.log(dataStr);
 
 		switch(type){
-			case '>p':
-				self.emit('power',{port:0,value:parseInt(dataStr.substring(2))});
-				break;
-			case '>e':
-				self.emit('antennaState', parseInt(dataStr.substring(2)));
-				break;
 			case '>b':
 				self.emit('buzzer',parseInt(dataStr.substring(2)));
 				break;
 			case '>c':
 				self.emit('continueMode',parseInt(dataStr.substring(2)));
 				break;
+			case '>e':
+				self.emit('antennaState', parseInt(dataStr.substring(2)));
+				break;
+			case '>F':
+				self.emit('freqeuncyBand', dataStr.substring(2));
+				break;
+			case '>g':
+				self.emit('selectAction',dataStr.substring(2));
+				break;	
+			case '>p':
+				self.emit('power',{port:0,value:parseInt(dataStr.substring(2))});
+				break;
+			
+			
 			case '>q':
 				self.emit('Qvalue',parseInt(dataStr.substring(2)));
 				break;
@@ -38,6 +46,35 @@ nesslab_reader = function(){
 			case '>r':
 				self.emit('ipAddress',dataStr.substring(4));
 				break;
+			case '>m':
+				self.emit('selectMask',dataStr.substring(2));
+				break;
+			
+			case '>y': 
+				self.emit('tagInformations',dataStr.substring(2));
+				break;
+			case '>v':
+				self.emit('version',dataStr.substring(2));
+				break;
+			case '>t':
+				self.emit('inventoryTime',parseInt(dataStr.substring(2)));
+				break;
+			case '>x':
+				self.emit('operationMode', dataStr.substring(2));
+				break;
+			case '>o':
+				self.emit('fhss', dataStr.substring(2));
+				break;
+			case '>n':
+				self.emit('channelNumber', parseInt(dataStr.substring(2)));
+				break;
+			default: 
+				switch(self.action){
+					case 'getWritePort':
+						self.emit('writePort',parseInt(dataStr.substring(1)));	
+						self.action = null;
+						break;
+				}
 		}
 	})
 }
@@ -45,6 +82,8 @@ nesslab_reader = function(){
 nesslab_reader.prototype = new events.EventEmitter;
 
 nesslab_reader.prototype.socket = net.Socket();
+
+nesslab_reader.prototype.action;
 
 // Node version
 nesslab_reader.prototype.nodeVersion = process.versions.node;
@@ -130,6 +169,97 @@ nesslab_reader.prototype.getSession = function(callback){
 nesslab_reader.prototype.getIpAddress = function(callback){
 	this.socket.write(new Buffer([62,121,32,114,13,10]));
 	this.on('ipAddress', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getWritePort = function(callback){
+	this.action = 'getWritePort';
+	this.socket.write(new Buffer([62,121,32,50,13,10]));
+	this.on('writePort', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getSelectMask = function(callback){
+	this.socket.write(new Buffer([62,121,32,109,13,10]));
+	this.on('selectMask', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getSelectAction = function(callback){
+	this.socket.write(new Buffer([62,121,32,103,13,10]));
+	this.on('selectAction', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getTagInformations = function(callback){
+	this.socket.write(new Buffer([62,121,32,121,13,10]));
+	this.on('tagInformations', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getVersion = function(type,callback){
+	this.socket.write(new Buffer([62,121,32,118,32,type.toString,13,10]));
+	this.on('version', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getInventoryTime = function(callback){
+	this.socket.write(new Buffer([62,121,32,116,13,10]));
+	this.on('inventoryTime', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getOperationMode = function(callback){
+	this.socket.write(new Buffer([62,121,32,120,13,10]));
+	this.on('operationMode', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getFrequencyBand = function(callback){
+	this.socket.write(new Buffer([62,121,32,70,13,10]));
+	this.on('freqeuncyBand', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}	
+
+nesslab_reader.prototype.getFhss = function(callback){
+	this.socket.write(new Buffer([62,121,32,111,13,10]));
+	this.on('fhss', function(data){
+		if(callback){
+			callback(data)
+		}
+	});
+}
+
+nesslab_reader.prototype.getChannelNumber = function(callback){
+	this.socket.write(new Buffer([62,121,32,110,13,10]));
+	this.on('channelNumber', function(data){
 		if(callback){
 			callback(data)
 		}
