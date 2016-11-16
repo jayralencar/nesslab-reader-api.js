@@ -266,6 +266,11 @@ nesslab_reader.prototype.getChannelNumber = function(callback){
 	});
 }
 
+/* ===================== SETS ===================== */
+nesslab_reader.prototype.setBuzzer = function(bool){
+	this.socket.write(new Buffer([62, 120, 32,98,32, (bool?49:48)  ,13,10]));
+}
+
 nesslab_reader.prototype.enableAntenna = function(antennaport){
 	
 }
