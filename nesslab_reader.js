@@ -763,6 +763,29 @@ nesslab_reader.prototype.setSession = function(value, session, target){
 
 	var buf = this.nodeVersion >= 5.10 ? Buffer.from(arr) : new Buffer(arr);
 	this.socket.write(buf);
+	return this;
+}
+
+/**
+* set IP Address
+* @param {String} ip
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setIpAddress = function(ip){
+	var arr = [62,120,32,114,32];
+
+	for(var i = 0 ; i < ip.length; i++){
+		arr.push(ip.charCodeAt(i));
+	}
+
+	arr.push(13);
+	arr.push(10);
+
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(arr) : new Buffer(arr);
+	console.log(buf.toString());
+	this.socket.write(buf);
+	return this;
 }
 
 
