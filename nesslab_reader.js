@@ -580,6 +580,106 @@ nesslab_reader.prototype.setBuzzer = function(bool, callback){
 }
 
 /**
+* set continue mode
+* @param {Bool} bool
+* @param {Function} callback
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setContinueMode = function(bool, callback){
+	this.socket.write(new Buffer([62, 120, 32,99,32, (bool?49:48)  ,13,10]));
+	if(callback){
+		callback();
+	}
+	return this;
+}
+
+/**
+* set Q Value
+* @param {Int} value
+* @param {Function} callback
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setQvalue = function(value, callback){
+	this.socket.write(new Buffer([62, 120 ,32,113,32,value.toString(),13,10]));
+	if(callback){
+		callback();
+	}
+	return this;
+}
+
+/**
+* set Algorithm Parameter
+* @param {Int} algorithm
+* @param {Int} index
+* @param {Int} value
+* @param {Function} callback
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setAlgorithmParameter = function(algorithm,index,value, callback){
+	this.socket.write(new Buffer([62, 120,32,81,32, algorithm.toString(),index.toString(),32,value.toString() ,13,10]));
+	if(callback){
+		callback();
+	}
+	return this;
+}
+
+/**
+* set Antenna State
+* @param {Int} value
+* @param {Function} callback
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setAntennaState = function(value, callback){
+	this.socket.write(new Buffer([62, 120 ,32,101,32,value.toString(),13,10]));
+	if(callback){
+		callback();
+	}
+	return this;
+}
+
+/**
+* set Power
+* @param {Int} value
+* @param {Function} callback
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setPower = function(value, callback){
+	var init = [62,120,32,112,32];
+
+	var buf = new Buffer(10);	
+
+	for(i = 0 ; i < init.length ; i++){
+		buf[i] = init[i];
+	}
+
+	var str = value.toString();
+
+	var diff = 3 - str.length;
+
+	for(var j = 0 ; j < diff; j++){
+		str = '0'+str;
+	}
+
+	for(var i = 0 ; i<str.length;i++){
+		buf[i+5] = str.charCodeAt(i);
+	}
+
+	buf[8] = 13;
+	buf[9] = 10;
+
+	this.socket.write(buf);
+	if(callback){
+		callback();
+	}
+	return this;
+}
+
+/**
 * set antenna's power
 * @param {Int} antennaport
 * @param {Int} power
