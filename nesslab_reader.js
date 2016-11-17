@@ -589,7 +589,8 @@ nesslab_reader.prototype.getAntennaState = function(callback){
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.setBuzzer = function(bool, callback){
-	this.socket.write(new Buffer([62, 120, 32,98,32, (bool?49:48)  ,13,10]));
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62, 120, 32,98,32, (bool?49:48)  ,13,10]) : new Buffer([62, 120, 32,98,32, (bool?49:48)  ,13,10]);
+	this.socket.write(buf);
 	if(callback){
 		callback();
 	}
@@ -604,7 +605,8 @@ nesslab_reader.prototype.setBuzzer = function(bool, callback){
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.setContinueMode = function(bool, callback){
-	this.socket.write(new Buffer([62, 120, 32,99,32, (bool?49:48)  ,13,10]));
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62, 120, 32,99,32, (bool?49:48)  ,13,10]) : new Buffer([62, 120, 32,99,32, (bool?49:48)  ,13,10]);
+	this.socket.write(buf);
 	if(callback){
 		callback();
 	}
@@ -619,7 +621,8 @@ nesslab_reader.prototype.setContinueMode = function(bool, callback){
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.setQvalue = function(value, callback){
-	this.socket.write(new Buffer([62, 120 ,32,113,32,value.toString(),13,10]));
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62, 120 ,32,113,32,value.toString(),13,10]) : new Buffer([62, 120 ,32,113,32,value.toString(),13,10]);
+	this.socket.write(buf);
 	if(callback){
 		callback();
 	}
@@ -636,7 +639,8 @@ nesslab_reader.prototype.setQvalue = function(value, callback){
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.setAlgorithmParameter = function(algorithm,index,value, callback){
-	this.socket.write(new Buffer([62, 120,32,81,32, algorithm.toString(),index.toString(),32,value.toString() ,13,10]));
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62, 120,32,81,32, algorithm.toString(),index.toString(),32,value.toString() ,13,10]) : new Buffer([62, 120,32,81,32, algorithm.toString(),index.toString(),32,value.toString() ,13,10]);
+	this.socket.write(buf);
 	if(callback){
 		callback();
 	}
@@ -651,7 +655,8 @@ nesslab_reader.prototype.setAlgorithmParameter = function(algorithm,index,value,
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.setAntennaState = function(value, callback){
-	this.socket.write(new Buffer([62, 120 ,32,101,32,value.toString(),13,10]));
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62, 120 ,32,101,32,value.toString(),13,10]) : new Buffer([62, 120 ,32,101,32,value.toString(),13,10]);
+	this.socket.write(buf);
 	if(callback){
 		callback();
 	}
@@ -668,7 +673,7 @@ nesslab_reader.prototype.setAntennaState = function(value, callback){
 nesslab_reader.prototype.setPower = function(value, callback){
 	var init = [62,120,32,112,32];
 
-	var buf = new Buffer(10);	
+	var buf = this.nodeVersion >= 5.10 ? Buffer.alloc(10) : new Buffer(10);	
 
 	for(i = 0 ; i < init.length ; i++){
 		buf[i] = init[i];
