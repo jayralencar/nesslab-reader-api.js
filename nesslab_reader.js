@@ -800,6 +800,36 @@ nesslab_reader.prototype.setWritePort = function(port){
 }
 
 /**
+* set select mask
+* @param {Int} bank
+* @param {Int} offset
+* @param {Int} count
+* @param {String} mask
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setSelectMask = function(bank, offset, count, mask){
+	var buf = this.nodeVersion>=5.10? Buffer.from('>x m '+bank+' '+offset+' '+count+' '+mask+'\r\n') : new Buffer('>x m '+bank+' '+offset+' '+count+' '+mask+'\r\n');
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* set select action
+* @param {Int} target
+* @param {Int} action
+* @param {Int} truncate
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+
+nesslab_reader.prototype.setSelectAction = function(target, action, truncate){
+	var buf = this.nodeVersion>=5.10? Buffer.from('>x g '+target+' '+action+' '+truncate+'\r\n') : new Buffer('>x g '+target+' '+action+' '+truncate+'\r\n');
+	this.socket.write(buf);
+	return this;
+}
+
+/**
 * exporting module
 */
 module.exports = new nesslab_reader();
