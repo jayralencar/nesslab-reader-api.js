@@ -229,6 +229,29 @@ nesslab_reader.prototype.disableAntenna = function(antennaport, callback){
 	return this;
 }
 
+/**
+* suspend antenna port settings
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.suspendAntennaPortSettings = function(){
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62,120,32,37,32, 57,57, 32,49 ,13,10]) : new Buffer([62,120,32,37,32, 57,57, 32,49 ,13,10]);
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* resume antenna port settings
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.resumeAntennaPortSettings = function(){
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62,120,32,37,32, 57,57, 32,48 ,13,10]) : new Buffer([62,120,32,37,32, 57,57, 32,48 ,13,10]);
+	this.socket.write(buf);
+	return this;
+}
+
+
 /* ---------------------------------------------------
    |												 |
    | ===================== GETS ==================== |
@@ -717,20 +740,6 @@ nesslab_reader.prototype.setPower = function(port, value, callback){
 	return this;
 }
 
-/**
-* set antenna's power
-* @param {Int} antennaport
-* @param {Int} power
-* @param {Function} callback
-* @return {Object} this
-* @author Jayr Alencar (@jayralencar)
-*/
-nesslab_reader.prototype.setPowerAntenna = function(antennaport, power, callback){
-	if(callback){
-		callback();
-	}
-	return this;
-}
 
 /**
 * exporting module
