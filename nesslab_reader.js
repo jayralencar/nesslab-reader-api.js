@@ -740,6 +740,32 @@ nesslab_reader.prototype.setPower = function(port, value, callback){
 	return this;
 }
 
+/**
+* set session
+* @param {Int} value
+* @param {Int} session
+* @param {Int} target
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setSession = function(value, session, target){
+	var arr = [62,120,32,115,32,value.toString().charCodeAt(0)];
+
+	if(session){
+		arr.push(32);
+		arr.push(session.toString().charCodeAt(0));
+		arr.push(32);
+		arr.push(target.toString().charCodeAt(0));
+	}
+
+	arr.push(13);
+	arr.push(10);
+
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(arr) : new Buffer(arr);
+	this.socket.write(buf);
+}
+
+
 
 /**
 * exporting module
