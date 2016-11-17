@@ -176,33 +176,13 @@ nesslab_reader.prototype.connect = function(ip, port, callback){
 }
 
 /**
-* reconnect reader - disconnect and then connect
-* @param {Function} callback
-* @return {Object} this
-* @author Jayr Alencar (@jayralencar)
-*/
-nesslab_reader.prototype.reconnect = function(callback){
-	return this;
-}
-
-/**
-* disconnect reader
-* @param {Function} callback
-* @return {Object} this
-* @author Jayr Alencar (@jayralencar)
-*/
-nesslab_reader.prototype.disconnect = function(callback){
-	this.close(callback||null);
-	return this;
-}
-
-/**
 * disconnect reader - or close connection
 * @param {Function} callback
 * @return {Object} this
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.close = function(callback){
+	this.socket.destroy();
 	return this;
 }
 
