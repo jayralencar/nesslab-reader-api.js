@@ -783,12 +783,21 @@ nesslab_reader.prototype.setIpAddress = function(ip){
 	arr.push(10);
 
 	var buf = this.nodeVersion >= 5.10 ? Buffer.from(arr) : new Buffer(arr);
-	console.log(buf.toString());
 	this.socket.write(buf);
 	return this;
 }
 
-
+/**
+* set write port
+* @param {Int} port
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setWritePort = function(port){
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from([62,120,32,50,32,port.toString(),13,10]) : new Buffer([62,120,32,50,32,port.toString(),13,10]);
+	this.socket.write(buf);
+	return this;
+}
 
 /**
 * exporting module
