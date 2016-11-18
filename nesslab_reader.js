@@ -251,6 +251,30 @@ nesslab_reader.prototype.resumeAntennaPortSettings = function(){
 	return this;
 }
 
+/**
+* reboot reader
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.reboot = function(){
+	var str = ">0 reboot -f\r\n";
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(str) : new Buffer(str);
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* monitoring
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar) 
+*/
+nesslab_reader.prototype.monitor = function(){
+	var arr = [62,121,32,81,32,57,13,10];
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(arr) : new Buffer(arr);
+	this.socket.write(buf);
+	return this;
+}
+
 
 /* ---------------------------------------------------
    |												 |
@@ -825,6 +849,70 @@ nesslab_reader.prototype.setSelectMask = function(bank, offset, count, mask){
 
 nesslab_reader.prototype.setSelectAction = function(target, action, truncate){
 	var buf = this.nodeVersion>=5.10? Buffer.from('>x g '+target+' '+action+' '+truncate+'\r\n') : new Buffer('>x g '+target+' '+action+' '+truncate+'\r\n');
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* set inventory time
+* @param {Int} msec - milleseconds
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setInventoryTime = function(msec){
+	var str = ">x t "+mesc+"\r\n";
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(str) : new Buffer(str);
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* set operation mode
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setOperationMode = function(){
+	var arr= [62,120,32,88,13,10];
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(arr) : new Buffer(arr);
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* set frequency band
+* @param {Int} band
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setFrequencyBand = function(band){
+	var str = ">x F "+band+"\r\n";
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(str) : new Buffer(str);
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* set FHSS
+* @param {Bool} state
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setFhss = function(state){
+	var arr= [62,120,32,111,32,state?49:48,13,10];
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(arr) : new Buffer(arr);
+	this.socket.write(buf);
+	return this;
+}
+
+/**
+* set channel number
+* @param {Int} number
+* @return {Object} this
+* @author Jayr Alencar (@jayralencar)
+*/
+nesslab_reader.prototype.setChannelNumber = function(number){
+	var str = ">t "+number+"\r\n";
+	var buf = this.nodeVersion >= 5.10 ? Buffer.from(str) : new Buffer(str);
 	this.socket.write(buf);
 	return this;
 }
