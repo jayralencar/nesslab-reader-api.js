@@ -108,6 +108,14 @@ nesslab_reader = function(){
 						self.emit('writePort',parseInt(dataStr.substring(1)));	
 						self.action = null;
 						break;
+					default:
+						var tag = dataStr.substring(2);
+						var result = {
+							tag: tag.substring(2,30),
+							antenna: tag.substring(0,1),
+							tagId: tag 
+						}
+						self.emit('tag', result);
 				}
 		}
 	});
@@ -274,7 +282,6 @@ nesslab_reader.prototype.monitor = function(){
 	this.socket.write(buf);
 	return this;
 }
-
 
 /* ---------------------------------------------------
    |												 |
