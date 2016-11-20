@@ -38,13 +38,39 @@ nesslab_reader = function(){
 	});
 
 	/**
+	* On connection error
+	*/
+	this.socket.on('error', function(res){
+		self.emit('error',res);
+	});
+
+	/**
+	* On connection end
+	*/
+	this.socket.on('end', function(res){
+		self.emit('end',res);
+	});
+
+	/**
+	* On connection timeout
+	*/
+	this.socket.on('timeout', function(res){
+		self.emit('timeout',res);
+	});
+
+	/**
+	* On connection is closed
+	*/
+	this.socket.on('close', function(res){
+		self.emit('close',res);
+	});
+
+	/**
 	* When the socket returns any data
 	*/
 	this.socket.on('data', function(data){
 		var dataStr = data.toString();
 		var type = dataStr.substring(0,2);
-		console.log(dataStr);
-
 		switch(type){
 			case '>b':
 				self.emit('buzzer',parseInt(dataStr.substring(2)));
@@ -53,7 +79,21 @@ nesslab_reader = function(){
 				self.emit('continueMode',parseInt(dataStr.substring(2)));
 				break;
 			case '>e':
-				self.emit('antennaState', parseInt(dataStr.substring(2)));
+				var number = parseInt(dataStr.substring(2));
+
+				var result = {
+					port1: (number & 0x0001) > 0,
+					port2: (number & 0x0002) > 0,
+					port3: (number & 0x0004) > 0,
+					port4: (number & 0x0008) > 0
+				}
+				if(self.activateCallback){
+					self.activateCallback(result);
+					self.activateCallback = null;
+				}else{
+					self.emit('antennaState', result);	
+				}
+				
 				break;
 			case '>F':
 				self.emit('freqeuncyBand', dataStr.substring(2));
@@ -109,7 +149,7 @@ nesslab_reader = function(){
 						self.action = null;
 						break;
 					default:
-						var tag = dataStr.substring(2);
+						var tag = dataStr.substring(1);
 						var result = {
 							tag: tag.substring(2,30),
 							antenna: tag.substring(0,1),
@@ -150,6 +190,11 @@ nesslab_reader.prototype.ip = '192.168.0.100';
 * default TCP port
 */
 nesslab_reader.prototype.port = 5578;
+
+/**
+* activat antenna callback
+*/
+nesslab_reader.prototype.activateCallback = null;
 
 /* ---------------------------------------------------
    |												 |
@@ -223,6 +268,23 @@ nesslab_reader.prototype.stop = function(){
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.enableAntenna = function(antennaport, callback){
+	var self = this;
+	this.activateCallback = function(res){
+		var port1 = antennaport == 1 ? true : res.port1;
+		var port2 = antennaport == 2 ? true : res.port2;
+		var port3 = antennaport == 3 ? true : res.port3;
+		var port4 = antennaport == 4 ? true : res.port4;
+		var num = (port1 ? 1 : 0) + ((port2 ? 1 : 0) << 1) + ((port3 ? 1 : 0) << 2) + ((port4 ? 1 : 0) << 3);
+
+		var str = '>x e '+num+' \r\n';
+		var buf = this.nodeVersion >= 5.10 ? Buffer.from(str) : new Buffer(str);
+
+		self.socket.write(buf);
+		if(callback){
+			callback();
+		}
+	};
+	this.getAntennaState();
 	return this;
 }
 
@@ -234,6 +296,23 @@ nesslab_reader.prototype.enableAntenna = function(antennaport, callback){
 * @author Jayr Alencar (@jayralencar)
 */
 nesslab_reader.prototype.disableAntenna = function(antennaport, callback){
+	var self = this;
+	this.activateCallback = function(res){
+		var port1 = antennaport == 1 ? false : res.port1;
+		var port2 = antennaport == 2 ? false : res.port2;
+		var port3 = antennaport == 3 ? false : res.port3;
+		var port4 = antennaport == 4 ? false : res.port4;
+		var num = (port1 ? 1 : 0) + ((port2 ? 1 : 0) << 1) + ((port3 ? 1 : 0) << 2) + ((port4 ? 1 : 0) << 3);
+
+		var str = '>x e '+num+' \r\n';
+		var buf = this.nodeVersion >= 5.10 ? Buffer.from(str) : new Buffer(str);
+
+		self.socket.write(buf);
+		if(callback){
+			callback();
+		}
+	};
+	this.getAntennaState();
 	return this;
 }
 
@@ -282,6 +361,8 @@ nesslab_reader.prototype.monitor = function(){
 	this.socket.write(buf);
 	return this;
 }
+
+
 
 /* ---------------------------------------------------
    |												 |
