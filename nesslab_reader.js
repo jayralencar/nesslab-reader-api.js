@@ -150,8 +150,9 @@ nesslab_reader = function(){
 						break;
 					default:
 						var tag = dataStr.substring(1);
+						var size = tag.length;
 						var result = {
-							tag: tag.substring(2,30),
+							tag: tag.substring(size - self.tagSize > 0? size - self.tagSize:0),
 							antenna: tag.substring(0,1),
 							tagId: tag 
 						}
@@ -172,9 +173,14 @@ nesslab_reader.prototype = new events.EventEmitter;
 nesslab_reader.prototype.socket = net.Socket();
 
 /**
-* action that the reade is executing - This is used if the reponse is not identified
+* action that the reader is executing - This is used if the reponse is not identified
 */
 nesslab_reader.prototype.action;
+
+/**
+ * tagID size
+ */
+nesslab_reader.prototype.tagSize = 28;
 
 /**
 * node version of the current machine
@@ -711,10 +717,19 @@ nesslab_reader.prototype.getAntennaState = function(callback){
 
 /* ---------------------------------------------------
    |												 |
-   | ===================== SETS ==================== |
+   | ==================== SETTERS ================== |
    |												 |
    ---------------------------------------------------
 */
+
+/**
+ * set tag size
+ * @param {int} size
+ * @author Jayr Alencar (@jayralencar)
+ */
+nesslab_reader.prototype.setTagSize = function(size){
+	this.tagSize = size;
+}
 
 /**
 * set buzzer enable value
